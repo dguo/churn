@@ -1,3 +1,5 @@
+"""Initialize the Churn application"""
+
 import configparser
 import os
 import sqlite3
@@ -5,6 +7,7 @@ import sqlite3
 import click
 
 def initialize_tables(db_path):
+    """Create a SQLite database with the default tables and data"""
     conn = sqlite3.connect(db_path)
     c = conn.cursor()
 
@@ -71,16 +74,19 @@ def initialize_tables(db_path):
     conn.close()
 
 def init_handler():
+    """Create a config file and database as necessary"""
+
     config_dir = click.get_app_dir('churn')
     config_path = os.path.join(config_dir, 'churn.ini')
 
     if os.path.exists(config_path):
-        if not click.confirm('Churn has already been initialized. ' +
-               'Would you look to clear your existing data, and reinitialize?'):
+        if not click.confirm(('Churn has already been initialized. '
+                              'Would you look to clear your existing data, and '
+                              'reinitialize?')):
             exit(0)
 
     try:
-        os.makedirs(config_dir);
+        os.makedirs(config_dir)
     except FileExistsError:
         pass
 
@@ -102,4 +108,3 @@ def init_handler():
         config.write(config_file)
 
     initialize_tables(db_path)
-
