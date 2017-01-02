@@ -1,10 +1,10 @@
-FROM python:3.6.0
+FROM python:3.5.2
 
 RUN mkdir /usr/src/churn
 WORKDIR /usr/src/churn
 
-COPY requirements.txt setup.py ./
-RUN pip install --editable .
+COPY setup.py requirements-dev.txt ./
+RUN pip install --editable . -r requirements-dev.txt
 
 CMD /bin/bash
 

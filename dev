@@ -19,6 +19,11 @@ def down(args):
     except OSError:
         print('Please install Docker and Docker Compose.', file=sys.stderr)
 
+def lint(args):
+    rc = call(['docker-compose', 'run', 'churn', 'bash', '-c',
+               'pylint -rn ./**/*.py *.py dev'])
+    exit(rc)
+
 parser = argparse.ArgumentParser(prog='./dev')
 subparsers = parser.add_subparsers(help='Available commands')
 
@@ -29,6 +34,10 @@ parser_up.set_defaults(func=up)
 parser_down = subparsers.add_parser('down',
     help='Bring down the development environment, and clean up')
 parser_down.set_defaults(func=down)
+
+parser_lint = subparsers.add_parser('lint',
+                                    help='Lint the code')
+parser_lint.set_defaults(func=lint)
 
 args = parser.parse_args()
 args.func(args)
