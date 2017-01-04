@@ -1,5 +1,3 @@
-"""Churn metadata"""
-
 from setuptools import setup, find_packages
 
 setup(
@@ -22,13 +20,13 @@ setup(
     ],
     keywords='credit card churning rewards',
     packages=find_packages(),
+    include_package_data=True,
     install_requires=[
         'click>=6'
     ],
-    py_modules=['churn'],
     entry_points={
         'console_scripts': [
-            'churn=churn:cli'
+            'churn=src.cli:main'
         ]
     }
 )

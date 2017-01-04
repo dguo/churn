@@ -6,6 +6,8 @@ import sqlite3
 
 import click
 
+from . import util
+
 def initialize_tables(db_path):
     """Create a SQLite database with the default tables and data"""
     conn = sqlite3.connect(db_path)
@@ -76,8 +78,8 @@ def initialize_tables(db_path):
 def init_handler():
     """Create a config file and database as necessary"""
 
-    config_dir = click.get_app_dir('churn')
-    config_path = os.path.join(config_dir, 'churn.ini')
+    config_dir = util.get_config_dir()
+    config_path = util.get_config_path()
 
     if os.path.exists(config_path):
         if not click.confirm(('Churn has already been initialized. '

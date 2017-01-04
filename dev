@@ -8,10 +8,14 @@ import argparse
 from subprocess import call
 import sys
 
-# pylint: disable=missing-docstring,unused-argument
+# pylint: disable=unused-argument
 
-def up():
+def up(args):
     try:
+        # Workaround for churn.egg-info being wiped out by the volume mount
+        # http://stackoverflow.com/q/31365864
+        call(['docker-compose', 'run', 'churn', 'bash', '-c',
+              'pip install --editable .'])
         call(['docker-compose', 'run', 'churn'])
     except OSError:
         print('Please install Docker and Docker Compose.', file=sys.stderr)
