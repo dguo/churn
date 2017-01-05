@@ -21,11 +21,13 @@ def initialize_tables(db_path):
     c.executemany('INSERT INTO card_networks (name) VALUES (?)', card_networks)
 
     c.execute('''CREATE TABLE card_issuers
-                 (id INTEGER PRIMARY KEY NOT NULL, name TEXT NOT NULL)''')
+                 (id INTEGER PRIMARY KEY NOT NULL,
+                  name TEXT NOT NULL UNIQUE)''')
 
     card_issuers = [('American Express',), ('Barclays',), ('Bank of America',),
                     ('Capital One',), ('Chase',), ('Citibank',), ('Comenity',),
-                    ('Discover',), ('Mastercard',), ('U.S. Bank',)]
+                    ('Discover',), ('Mastercard',), ('U.S. Bank',),
+                    ('Wells Fargo',)]
 
     c.executemany('INSERT INTO card_issuers (name) VALUES (?)', card_issuers)
 
@@ -38,8 +40,12 @@ def initialize_tables(db_path):
                   auto_payments BOOLEAN NOT NULL,
                   card_network_id INTEGER NOT NULL,
                   card_issuer_id INTEGER NOT NULL,
-                  FOREIGN KEY(card_network_id) REFERENCES card_networks(id),
-                  FOREIGN KEY(card_issuer_id) REFERENCES card_issuers(id)
+                  FOREIGN KEY(card_network_id)
+                      REFERENCES card_networks(id)
+                      ON DELETE CASCADE,
+                  FOREIGN KEY(card_issuer_id)
+                      REFERENCES card_issuers(id)
+                      ON DELETE CASCADE
                   )''')
 
     c.execute('''CREATE TABLE payments

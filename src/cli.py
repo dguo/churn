@@ -4,6 +4,8 @@ from . import errors, util
 from .subcommands.initialize import initialize_application
 from .subcommands.networks import (list_networks, add_network, remove_network,
                                    update_network)
+from .subcommands.issuers import (list_issuers, add_issuer, remove_issuer,
+                                  update_issuer)
 
 from .subcommands.uninstall import uninstall_application
 
@@ -45,6 +47,26 @@ def networks(command):
         remove_network(get_connection())
     elif command == 'update':
         update_network(get_connection())
+
+@main.command()
+@click.option('--list', '-l', 'command', flag_value='list',
+              help='List the issuers.', default=True)
+@click.option('--add', '-a', 'command', flag_value='add',
+              help='Add a issuer.')
+@click.option('--rm', '-r', 'command', flag_value='remove',
+              help='Remove a issuer.')
+@click.option('--update', '-u', 'command', flag_value='update',
+              help='Update a issuer.')
+def issuers(command):
+    """Manage card issuers."""
+    if command == 'list':
+        list_issuers(get_connection())
+    elif command == 'add':
+        add_issuer(get_connection())
+    elif command == 'remove':
+        remove_issuer(get_connection())
+    elif command == 'update':
+        update_issuer(get_connection())
 
 @main.command()
 def uninstall():
