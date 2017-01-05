@@ -31,6 +31,10 @@ def lint(args):
                'pylint -rn ./**/*.py *.py dev'])
     exit(rc)
 
+def test(args):
+    rc = call(['docker-compose', 'run', 'churn', 'bash', '-c', 'pytest'])
+    exit(rc)
+
 def main():
     parser = argparse.ArgumentParser(prog='./dev')
     subparsers = parser.add_subparsers(help='Available commands')
@@ -44,9 +48,11 @@ def main():
                                               'environment, and clean up'))
     parser_down.set_defaults(func=down)
 
-    parser_lint = subparsers.add_parser('lint',
-                                        help='Lint the code')
+    parser_lint = subparsers.add_parser('lint', help='Lint the code')
     parser_lint.set_defaults(func=lint)
+
+    parser_test = subparsers.add_parser('test', help='Test the code')
+    parser_test.set_defaults(func=test)
 
     args = parser.parse_args()
     args.func(args)
