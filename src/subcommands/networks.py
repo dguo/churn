@@ -3,12 +3,12 @@ import sqlite3
 import click
 from pick import pick
 
-def get_networks(connection):
+def _get_networks(connection):
     command = 'SELECT name FROM card_networks ORDER BY name'
     return [row['name'] for row in connection.execute(command)]
 
 def list_networks(connection):
-    click.echo_via_pager('\n'.join(get_networks(connection)))
+    click.echo_via_pager('\n'.join(_get_networks(connection)))
 
 def add_network(connection):
     new_network = click.prompt('Please enter a new card network')
@@ -23,7 +23,7 @@ def add_network(connection):
 
 def remove_network(connection):
     title = 'Please select a card network.'
-    networks = get_networks(connection)
+    networks = _get_networks(connection)
     if not networks:
         click.secho('There is no network to remove.', fg='red')
         return
@@ -37,7 +37,7 @@ def remove_network(connection):
 
 def update_network(connection):
     title = 'Please select a card network.'
-    networks = get_networks(connection)
+    networks = _get_networks(connection)
     if not networks:
         click.secho('There is no network to update.', fg='red')
         return
