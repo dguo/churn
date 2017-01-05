@@ -3,6 +3,7 @@ import os
 import sqlite3
 
 import click
+from pick import pick
 
 from . import errors
 
@@ -24,3 +25,7 @@ def get_connection():
     con = sqlite3.connect(get_db_path())
     con.row_factory = sqlite3.Row
     return con
+
+def select(title, choices):
+    selection, index = pick(choices + ['(cancel)'], title)
+    return None if index == len(choices) else selection

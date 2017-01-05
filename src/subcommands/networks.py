@@ -1,7 +1,8 @@
 import sqlite3
 
 import click
-from pick import pick
+
+from ..util import select
 
 def _get_networks(connection):
     command = 'SELECT name FROM card_networks ORDER BY name'
@@ -27,13 +28,12 @@ def remove_network(connection):
     if not networks:
         click.secho('There is no network to remove.', fg='red')
         return
-    options = networks + ['(cancel)']
-    selection = pick(options, title)
-    if selection[0] != '(cancel)':
+    selection = select(title, networks)
+    if selection:
         command = 'DELETE FROM card_networks WHERE name = ?'
         with connection:
-            connection.execute(command, (selection[0],))
-        click.echo('Removed the card network: ' + selection[0])
+            connection.execute(command, (selection,))
+        click.echo('Removed the card network: ' + selection)
 
 def update_network(connection):
     title = 'Please select a card network.'
@@ -41,10 +41,9 @@ def update_network(connection):
     if not networks:
         click.secho('There is no network to update.', fg='red')
         return
-    options = networks + ['(cancel)']
-    selection = pick(options, title)
-    if selection[0] != '(cancel)':
+    selection = select(title, networks)
+    if selection:
         new_name = click.prompt('Please enter a new name')
         command = 'UPDATE card_networks SET name = ? WHERE name = ?'
         with connection:
-            connection.execute(command, (new_name, selection[0]))
+            connection.execute(command, (new_name, selection))
