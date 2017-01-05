@@ -1,18 +1,14 @@
 import click
 
-from . import util, errors
+def list_networks(connection):
+    command = 'SELECT name FROM card_networks ORDER BY name'
+    for row in connection.execute(command):
+        click.echo_via_pager(row['name'])
 
-def list_networks():
-    try:
-        con = util.get_connection()
-    except errors.MissingConfigError:
-        click.echo('Application is uninitialized. Please run the init command.')
-        exit(1)
+def add_network(connection, name):
+    command = 'INSERT INTO card_networks (name) VALUES (?)'
+    with connection:
+        connection.execute(command, (name,))
 
-    for row in con.execute('SELECT name FROM card_networks ORDER BY name'):
-        click.secho(row['name'], fg='green')
-
-def networks_handler(list_option):
-    """Handle operations for card networks"""
-    if list_option:
-        list_networks()
+def remove_network(connection):
+    command = 'DELETE FROM card_networks WHERE name = ?'

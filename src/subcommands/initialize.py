@@ -1,12 +1,10 @@
-"""Initialize the Churn application"""
-
 import configparser
 import os
 import sqlite3
 
 import click
 
-from . import util
+from .. import util
 
 def initialize_tables(db_path):
     """Create a SQLite database with the default tables and data"""
@@ -14,7 +12,8 @@ def initialize_tables(db_path):
     c = conn.cursor()
 
     c.execute('''CREATE TABLE card_networks
-                 (id INTEGER PRIMARY KEY NOT NULL, name TEXT NOT NULL)''')
+                 (id INTEGER PRIMARY KEY NOT NULL,
+                  name TEXT NOT NULL UNIQUE)''')
 
     card_networks = [('American Express',), ('Visa',), ('Mastercard',),
                      ('Discover',)]
@@ -75,7 +74,7 @@ def initialize_tables(db_path):
     conn.commit()
     conn.close()
 
-def init_handler():
+def initialize_application():
     """Create a config file and database as necessary"""
 
     config_dir = util.get_config_dir()
