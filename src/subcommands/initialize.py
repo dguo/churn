@@ -58,7 +58,7 @@ def initialize_tables(db_path):
 
     c.execute('''CREATE TABLE redemption_types
                  (id INTEGER PRIMARY KEY NOT NULL,
-                  description TEXT NOT NULL)''')
+                  description TEXT NOT NULL UNIQUE)''')
 
     redemption_types = [('cash back',), ('flight',), ('gift card',), ('hotel',),
                         ('statement credit',)]

@@ -29,3 +29,6 @@ def get_connection():
 def select(title, choices):
     selection, index = pick(choices + ['(cancel)'], title)
     return None if index == len(choices) else selection
+
+def initialization_message():
+    click.secho('Please run the initialize command first.', fg='red')

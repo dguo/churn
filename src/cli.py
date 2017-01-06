@@ -6,6 +6,7 @@ from .subcommands.networks import (list_networks, add_network, remove_network,
                                    update_network)
 from .subcommands.issuers import (list_issuers, add_issuer, remove_issuer,
                                   update_issuer)
+from .subcommands.config import (list_config, update_config)
 
 from .subcommands.uninstall import uninstall_application
 
@@ -15,7 +16,7 @@ def get_connection():
     try:
         return util.get_connection()
     except errors.MissingConfigError:
-        click.secho('Please run the initialize command first.', fg='red')
+        util.initialization_message()
         exit(1)
 
 @click.group(context_settings=CONTEXT_SETTINGS)
@@ -67,6 +68,18 @@ def issuers(command):
         remove_issuer(get_connection())
     elif command == 'update':
         update_issuer(get_connection())
+
+@main.command()
+@click.option('--list', '-l', 'command', flag_value='list',
+              help='List the details.', default=True)
+@click.option('--update', '-u', 'command', flag_value='update',
+              help='Update the data location.')
+def config(command):
+    """Manage the configuration."""
+    if command == 'list':
+        list_config()
+    elif command == 'update':
+        update_config()
 
 @main.command()
 def uninstall():
