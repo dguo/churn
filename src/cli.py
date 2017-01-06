@@ -24,16 +24,17 @@ def get_connection():
 @click.group(context_settings=CONTEXT_SETTINGS)
 def main():
     """Keep track of your credit card payments and reward redemptions."""
-    pass
 
 @main.command()
 def initialize():
     """Initialize the application."""
     initialize_application()
 
+# pylint: disable=too-many-function-args
+
 @main.command()
 @click.option('--list', '-l', 'command', flag_value='list',
-              help='List the networks.', default=True)
+              help='List the networks.')
 @click.option('--add', '-a', 'command', flag_value='add',
               help='Add a network.')
 @click.option('--rm', '-r', 'command', flag_value='remove',
@@ -50,16 +51,18 @@ def networks(command):
         remove_network(get_connection())
     elif command == 'update':
         update_network(get_connection())
+    else:
+        main(['networks', '--help'])
 
 @main.command()
 @click.option('--list', '-l', 'command', flag_value='list',
-              help='List the issuers.', default=True)
+              help='List the issuers.')
 @click.option('--add', '-a', 'command', flag_value='add',
-              help='Add a issuer.')
+              help='Add an issuer.')
 @click.option('--rm', '-r', 'command', flag_value='remove',
-              help='Remove a issuer.')
+              help='Remove an issuer.')
 @click.option('--update', '-u', 'command', flag_value='update',
-              help='Update a issuer.')
+              help='Update an issuer.')
 def issuers(command):
     """Manage card issuers."""
     if command == 'list':
@@ -70,10 +73,12 @@ def issuers(command):
         remove_issuer(get_connection())
     elif command == 'update':
         update_issuer(get_connection())
+    else:
+        main(['issuers', '--help'])
 
 @main.command()
 @click.option('--list', '-l', 'command', flag_value='list',
-              help='List the details.', default=True)
+              help='List the details.')
 @click.option('--update', '-u', 'command', flag_value='update',
               help='Update the data location.')
 def config(command):
@@ -82,10 +87,12 @@ def config(command):
         list_config()
     elif command == 'update':
         update_config()
+    else:
+        main(['config', '--help'])
 
 @main.command(name='reward-types')
 @click.option('--list', '-l', 'command', flag_value='list',
-              help='List the reward types.', default=True)
+              help='List the reward types.')
 @click.option('--add', '-a', 'command', flag_value='add',
               help='Add a reward type.')
 @click.option('--rm', '-r', 'command', flag_value='remove',
@@ -102,6 +109,8 @@ def reward_types(command):
         remove_reward_type(get_connection())
     elif command == 'update':
         update_reward_type(get_connection())
+    else:
+        main(['reward-types', '--help'])
 
 @main.command()
 def uninstall():
