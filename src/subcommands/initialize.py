@@ -56,14 +56,14 @@ def initialize_tables(db_path):
                   FOREIGN KEY(card_id) REFERENCES cards(id)
                   )''')
 
-    c.execute('''CREATE TABLE redemption_types
+    c.execute('''CREATE TABLE reward_types
                  (id INTEGER PRIMARY KEY NOT NULL,
                   description TEXT NOT NULL UNIQUE)''')
 
     redemption_types = [('cash back',), ('flight',), ('gift card',), ('hotel',),
                         ('statement credit',)]
 
-    c.executemany('INSERT INTO redemption_types (description) VALUES (?)',
+    c.executemany('INSERT INTO reward_types (description) VALUES (?)',
                   redemption_types)
 
     c.execute('''CREATE TABLE redemptions
@@ -72,9 +72,9 @@ def initialize_tables(db_path):
                  value REAL NOT NULL,
                  card_id INTEGER NOT NULL,
                  description TEXT,
-                 redemption_type_id INTEGER NOT NULL,
+                 reward_type_id INTEGER NOT NULL,
                  FOREIGN KEY(card_id) REFERENCES cards(id),
-                 FOREIGN KEY(redemption_type_id) REFERENCES redemption_types(id)
+                 FOREIGN KEY(reward_type_id) REFERENCES reward_types(id)
                  )''')
 
     conn.commit()
@@ -113,5 +113,10 @@ def initialize_application():
     }
     with open(config_path, 'w') as config_file:
         config.write(config_file)
+
+    try:
+        os.remove(db_path)
+    except FileNotFoundError:
+        pass
 
     initialize_tables(db_path)

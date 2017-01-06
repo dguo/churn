@@ -7,6 +7,8 @@ from .subcommands.networks import (list_networks, add_network, remove_network,
 from .subcommands.issuers import (list_issuers, add_issuer, remove_issuer,
                                   update_issuer)
 from .subcommands.config import (list_config, update_config)
+from .subcommands.reward_types import (list_reward_types, add_reward_type,
+                                       remove_reward_type, update_reward_type)
 
 from .subcommands.uninstall import uninstall_application
 
@@ -80,6 +82,26 @@ def config(command):
         list_config()
     elif command == 'update':
         update_config()
+
+@main.command(name='reward-types')
+@click.option('--list', '-l', 'command', flag_value='list',
+              help='List the reward types.', default=True)
+@click.option('--add', '-a', 'command', flag_value='add',
+              help='Add a reward type.')
+@click.option('--rm', '-r', 'command', flag_value='remove',
+              help='Remove a reward type.')
+@click.option('--update', '-u', 'command', flag_value='update',
+              help='Update a reward type.')
+def reward_types(command):
+    """Manage reward types."""
+    if command == 'list':
+        list_reward_types(get_connection())
+    elif command == 'add':
+        add_reward_type(get_connection())
+    elif command == 'remove':
+        remove_reward_type(get_connection())
+    elif command == 'update':
+        update_reward_type(get_connection())
 
 @main.command()
 def uninstall():
