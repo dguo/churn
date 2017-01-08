@@ -2,7 +2,7 @@ import sqlite3
 
 import click
 
-from ..util import select
+from ..util import pick_with_cancel
 
 def _get_reward_types(connection):
     command = 'SELECT description FROM reward_types ORDER BY description'
@@ -29,12 +29,12 @@ def remove_reward_type(connection):
     if not reward_types:
         click.secho('There is no reward type to remove.', fg='red')
         return
-    selection = select(title, reward_types)
+    selection = pick_with_cancel(title, reward_types)
     if selection:
         command = 'DELETE FROM reward_types WHERE description = ?'
         with connection:
-            connection.execute(command, (selection,))
-        click.echo('Removed the reward type: ' + selection)
+            connection.execute(command, (selection[0],))
+        click.echo('Removed the reward type: ' + selection[0])
 
 def update_reward_type(connection):
     title = 'Please select a reward type.'
@@ -42,10 +42,10 @@ def update_reward_type(connection):
     if not reward_types:
         click.secho('There is no reward type to update.', fg='red')
         return
-    selection = select(title, reward_types)
+    selection = pick_with_cancel(title, reward_types)
     if selection:
         new_reward_type = click.prompt('Please enter a new reward type')
         command = ('UPDATE reward_types SET description = ? '
                    'WHERE description = ?')
         with connection:
-            connection.execute(command, (new_reward_type, selection))
+            connection.execute(command, (new_reward_type, selection[0]))

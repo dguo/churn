@@ -33,8 +33,8 @@ def initialize_tables(db_path):
 
     c.execute('''CREATE TABLE cards
                  (id INTEGER PRIMARY KEY NOT NULL,
-                  name TEXT NOT NULL,
-                  annual_fee REAL NOT NULL,
+                  name TEXT NOT NULL UNIQUE,
+                  annual_fee INTEGER NOT NULL,
                   opened TEXT NOT NULL,
                   closed TEXT,
                   auto_payments BOOLEAN NOT NULL,
@@ -51,7 +51,7 @@ def initialize_tables(db_path):
     c.execute('''CREATE TABLE payments
                  (id INTEGER PRIMARY KEY NOT NULL,
                   date TEXT NOT NULL,
-                  amount REAL NOT NULL,
+                  amount INTEGER NOT NULL,
                   card_id INTEGER NOT NULL,
                   FOREIGN KEY(card_id) REFERENCES cards(id)
                   )''')
@@ -69,7 +69,7 @@ def initialize_tables(db_path):
     c.execute('''CREATE TABLE redemptions
                 (id integer PRIMARY KEY NOT NULL,
                  date TEXT NOT NULL,
-                 value REAL NOT NULL,
+                 value INTEGER NOT NULL,
                  card_id INTEGER NOT NULL,
                  description TEXT,
                  reward_type_id INTEGER NOT NULL,

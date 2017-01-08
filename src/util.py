@@ -26,9 +26,9 @@ def get_connection():
     con.row_factory = sqlite3.Row
     return con
 
-def select(title, choices):
+def pick_with_cancel(title, choices):
     selection, index = pick(choices + ['(cancel)'], title)
-    return None if index == len(choices) else selection
+    return None if index == len(choices) else (selection, index)
 
 def initialization_message():
     click.secho('Please run the initialize command first.', fg='red')

@@ -23,7 +23,8 @@ setup(
     include_package_data=True,
     install_requires=[
         'click>=6,<7',
-        'pick==0.6.1'
+        'pick==0.6.1',
+        'tabulate==0.7.7'
     ],
     entry_points={
         'console_scripts': [
