@@ -1,12 +1,10 @@
-import collections
-from datetime import datetime
 import sqlite3
 
 import click
 from pick import pick
 from tabulate import tabulate
 
-from ..util import pick_with_cancel
+from ..util import pick_with_cancel, prompt_for_date
 from .networks import select_network_id
 from .issuers import select_issuer_id
 
@@ -32,16 +30,6 @@ def _get_cards(connection):
                  ORDER BY cards.name'''
     return connection.execute(command).fetchall()
 
-def _prompt_for_date(text):
-    value = None
-    while not value:
-        raw = click.prompt(text)
-        try:
-            value = datetime.strptime(raw, '%Y-%m-%d').isoformat()
-        except ValueError:
-            click.echo('Error: ' + raw + ' is not a valid date')
-    return value
-
 def _prompt_for_name():
     return click.prompt('Name')
 
@@ -49,10 +37,10 @@ def _prompt_for_annual_fee():
     return click.prompt('Annual fee', type=int)
 
 def _prompt_for_open_date():
-    return _prompt_for_date('Date opened (YYYY-MM-DD)')
+    return prompt_for_date('Date opened (YYYY-MM-DD)')
 
 def _prompt_for_close_date():
-    return _prompt_for_date('Date closed (YYYY-MM-DD)')
+    return prompt_for_date('Date closed (YYYY-MM-DD)')
 
 def _promot_for_autopay():
     return click.confirm('Automatic payments')
@@ -126,7 +114,7 @@ def add_card(connection):
             exit(1)
 
 def remove_card(connection):
-    card = select_card(connection)
+    card = select_card(connection, None)
     if not card:
         click.secho('There is no card to remove.', fg='red')
         return

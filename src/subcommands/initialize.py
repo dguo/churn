@@ -77,6 +77,12 @@ def initialize_tables(db_path):
                  FOREIGN KEY(reward_type_id) REFERENCES reward_types(id)
                  )''')
 
+    c.execute('''CREATE TABLE programs
+                 (id INTEGER PRIMARY KEY NOT NULL,
+                  name TEXT NOT NULL UNIQUE,
+                  balance TEXT NOT NULL,
+                  expiration TEXT)''')
+
     conn.commit()
     conn.close()
 

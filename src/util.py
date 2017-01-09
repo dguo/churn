@@ -1,4 +1,5 @@
 import configparser
+from datetime import datetime
 import os
 import sqlite3
 
@@ -32,3 +33,13 @@ def pick_with_cancel(title, choices):
 
 def initialization_message():
     click.secho('Please run the initialize command first.', fg='red')
+
+def prompt_for_date(text):
+    value = None
+    while not value:
+        raw = click.prompt(text)
+        try:
+            value = datetime.strptime(raw, '%Y-%m-%d').isoformat()
+        except ValueError:
+            click.echo('Error: ' + raw + ' is not a valid date')
+    return value

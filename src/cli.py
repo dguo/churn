@@ -10,6 +10,8 @@ from .subcommands.config import (list_config, update_config)
 from .subcommands.reward_types import (list_reward_types, add_reward_type,
                                        remove_reward_type, update_reward_type)
 from .subcommands.cards import (list_cards, add_card, remove_card, update_card)
+from .subcommands.programs import (list_programs, add_program, remove_program,
+                                   update_program)
 
 from .subcommands.uninstall import uninstall_application
 
@@ -24,7 +26,7 @@ def get_connection():
 
 @click.group(context_settings=CONTEXT_SETTINGS)
 def main():
-    """Keep track of your credit card payments and reward redemptions."""
+    """Keep track of your credit card payments and rewards."""
 
 @main.command()
 def initialize():
@@ -134,6 +136,28 @@ def cards(command):
         update_card(get_connection(), None)
     else:
         main(['cards', '--help'])
+
+@main.command()
+@click.option('--list', '-l', 'command', flag_value='list',
+              help='List the programs.')
+@click.option('--add', '-a', 'command', flag_value='add',
+              help='Add a program.')
+@click.option('--rm', '-r', 'command', flag_value='remove',
+              help='Remove a program.')
+@click.option('--update', '-u', 'command', flag_value='update',
+              help='Update a program.')
+def programs(command):
+    """Manage rewards programs."""
+    if command == 'list':
+        list_programs(get_connection())
+    elif command == 'add':
+        add_program(get_connection())
+    elif command == 'remove':
+        remove_program(get_connection())
+    elif command == 'update':
+        update_program(get_connection(), None)
+    else:
+        main(['programs', '--help'])
 
 @main.command()
 def uninstall():

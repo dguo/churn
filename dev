@@ -1,7 +1,5 @@
 #!/usr/bin/env python
 
-"""Development commands"""
-
 from __future__ import print_function
 
 import argparse
@@ -28,7 +26,7 @@ def down(args):
 
 def lint(args):
     rc = call(['docker-compose', 'run', 'churn', 'bash', '-c',
-               'pylint -rn ./**/*.py *.py dev'])
+               'shopt -s globstar && pylint -rn ./**/*.py dev'])
     exit(rc)
 
 def test(args):
