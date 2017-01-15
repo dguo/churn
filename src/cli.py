@@ -12,6 +12,8 @@ from .subcommands.reward_types import (list_reward_types, add_reward_type,
 from .subcommands.cards import (list_cards, add_card, remove_card, update_card)
 from .subcommands.programs import (list_programs, add_program, remove_program,
                                    update_program)
+from .subcommands.payments import (list_payments, add_payment, remove_payment,
+                                   update_payment)
 
 from .subcommands.uninstall import uninstall_application
 
@@ -158,6 +160,28 @@ def programs(command):
         update_program(get_connection(), None)
     else:
         main(['programs', '--help'])
+
+@main.command()
+@click.option('--list', '-l', 'command', flag_value='list',
+              help='List the payments.')
+@click.option('--add', '-a', 'command', flag_value='add',
+              help='Add a payment.')
+@click.option('--rm', '-r', 'command', flag_value='remove',
+              help='Remove a payment.')
+@click.option('--update', '-u', 'command', flag_value='update',
+              help='Update a payment.')
+def payments(command):
+    """Manage payments."""
+    if command == 'list':
+        list_payments(get_connection())
+    elif command == 'add':
+        add_payment(get_connection())
+    elif command == 'remove':
+        remove_payment(get_connection())
+    elif command == 'update':
+        update_payment(get_connection(), None)
+    else:
+        main(['payments', '--help'])
 
 @main.command()
 def uninstall():

@@ -50,7 +50,7 @@ def initialize_tables(db_path):
 
     c.execute('''CREATE TABLE payments
                  (id INTEGER PRIMARY KEY NOT NULL,
-                  date TEXT NOT NULL,
+                  payment_date TEXT NOT NULL,
                   amount INTEGER NOT NULL,
                   card_id INTEGER NOT NULL,
                   FOREIGN KEY(card_id) REFERENCES cards(id)

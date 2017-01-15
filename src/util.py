@@ -1,6 +1,7 @@
 import configparser
 from datetime import datetime
 import os
+import re
 import sqlite3
 
 import click
@@ -42,4 +43,14 @@ def prompt_for_date(text):
             value = datetime.strptime(raw, '%Y-%m-%d').isoformat()
         except ValueError:
             click.echo('Error: ' + raw + ' is not a valid date')
+    return value
+
+def prompt_for_money(text):
+    value = None
+    while not value:
+        raw = click.prompt(text)
+        if re.match(r'\d+(?:\.\d{1,2})?$', raw):
+            value = int(float(raw) * 100)
+        else:
+            click.echo('Error: ' + raw + ' is not a valid amount')
     return value
