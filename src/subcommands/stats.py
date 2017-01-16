@@ -1,19 +1,32 @@
 import click
 from tabulate import tabulate
 
+from ..util import format_money, format_percent
+
+def _get_total_payments(connection):
+    command = 'SELECT cast(sum(amount) AS REAL) / 100 FROM payments'
+    total_payments = connection.execute(command).fetchone()[0]
+    return total_payments if total_payments else 0.0
+
+def _get_total_rewards(connection):
+    command = 'SELECT cast(sum(value) AS REAL) / 100 FROM rewards'
+    total_rewards = connection.execute(command).fetchone()[0]
+    return total_rewards if total_rewards else 0.0
+
 def list_stats(connection):
-    payment_command = 'SELECT cast(sum(amount) AS REAL) / 100 FROM payments'
-    total_payments = connection.execute(payment_command).fetchone()[0]
+    total_payments = _get_total_payments(connection)
+    total_rewards = _get_total_rewards(connection)
 
-    rewards_command = 'SELECT cast(sum(value) AS REAL) / 100 FROM rewards'
-    total_rewards = connection.execute(rewards_command).fetchone()[0]
-
-    reward_rate = round(total_rewards / total_payments * 100, 2)
+    try:
+        reward_rate = round(total_rewards / total_payments * 100, 2)
+    except ZeroDivisionError:
+        reward_rate = None
 
     stats = [
-        ['Total Payments', '${:.2f}'.format(total_payments)],
-        ['Total Rewards', '${:.2f}'.format(total_rewards)],
-        ['Reward Rate', '{0:.2f}%'.format(reward_rate)]
+        ['Total Payments', format_money(total_payments)],
+        ['Total Rewards', format_money(total_rewards)],
+        ['Reward Rate',
+         format_percent(reward_rate) if reward_rate else 'N/A']
     ]
     headers = ['Statistic', 'Value']
 

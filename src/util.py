@@ -59,3 +59,9 @@ def prompt_for_money(text):
         else:
             click.echo('Error: ' + raw + ' is not a valid amount')
     return value
+
+def format_money(value):
+    return '${:.2f}'.format(value)
+
+def format_percent(value):
+    return '{:.2f}%'.format(value)
