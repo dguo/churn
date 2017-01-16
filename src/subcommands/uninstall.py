@@ -19,10 +19,11 @@ def uninstall_application():
     click.secho(config_dir, fg='red')
     click.secho(config_path, fg='red')
     click.secho(db_path, fg='red')
-    click.confirm('Do you want to continue?', abort=True)
+    if not click.confirm('Do you want to continue?'):
+        exit(0)
 
     os.remove(db_path)
     shutil.rmtree(config_dir)
 
-    click.echo('Complete.')
+    click.echo('Removed.')
     click.echo('Now run: pip uninstall churn')
