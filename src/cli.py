@@ -25,7 +25,7 @@ def _get_connection():
     try:
         return util.get_connection()
     except errors.MissingConfigError:
-        util.initialization_message()
+        util.initialize_message()
         exit(1)
 
 @click.group(context_settings=CONTEXT_SETTINGS)

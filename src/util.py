@@ -9,6 +9,8 @@ from pick import pick
 
 from . import errors
 
+DB_NAME = 'churn.db'
+
 def get_config_dir():
     return click.get_app_dir('churn')
 
@@ -32,8 +34,11 @@ def pick_with_cancel(title, choices):
     selection, index = pick(choices + ['(cancel)'], title)
     return None if index == len(choices) else (selection, index)
 
-def initialization_message():
+def initialize_message():
     click.secho('Please run the initialize command first.', fg='red')
+
+def successful_update_message():
+    click.secho('Successfully updated.', fg='green')
 
 def prompt_for_date(text):
     value = None
