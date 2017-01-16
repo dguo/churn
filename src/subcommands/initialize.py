@@ -66,12 +66,12 @@ def initialize_tables(db_path):
     c.executemany('INSERT INTO reward_types (description) VALUES (?)',
                   redemption_types)
 
-    c.execute('''CREATE TABLE redemptions
+    c.execute('''CREATE TABLE rewards
                 (id integer PRIMARY KEY NOT NULL,
-                 date TEXT NOT NULL,
+                 redemption_date TEXT NOT NULL,
                  value INTEGER NOT NULL,
-                 card_id INTEGER NOT NULL,
                  description TEXT,
+                 card_id INTEGER NOT NULL,
                  reward_type_id INTEGER NOT NULL,
                  FOREIGN KEY(card_id) REFERENCES cards(id),
                  FOREIGN KEY(reward_type_id) REFERENCES reward_types(id)
