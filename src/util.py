@@ -1,5 +1,6 @@
 import configparser
 from datetime import datetime
+from decimal import Decimal
 import os
 import re
 import sqlite3
@@ -26,9 +27,9 @@ def get_db_path():
     return config['database']['path']
 
 def get_connection():
-    con = sqlite3.connect(get_db_path())
-    con.row_factory = sqlite3.Row
-    return con
+    connection = sqlite3.connect(get_db_path())
+    connection.row_factory = sqlite3.Row
+    return connection
 
 def pick_with_cancel(title, choices):
     selection, index = pick(choices + ['(cancel)'], title)
@@ -55,7 +56,7 @@ def prompt_for_money(text):
     while not value:
         raw = click.prompt(text)
         if re.match(r'\d+(?:\.\d{1,2})?$', raw):
-            value = int(float(raw) * 100)
+            value = int(Decimal(raw) * 100)
         else:
             click.echo('Error: ' + raw + ' is not a valid amount')
     return value
