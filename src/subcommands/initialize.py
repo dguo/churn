@@ -6,7 +6,7 @@ import click
 
 from .. import util
 
-def initialize_tables(db_path):
+def _initialize_tables(db_path):
     """Create a SQLite database with the default tables and data"""
     conn = sqlite3.connect(db_path)
     c = conn.cursor()
@@ -53,29 +53,35 @@ def initialize_tables(db_path):
                   payment_date TEXT NOT NULL,
                   amount INTEGER NOT NULL,
                   card_id INTEGER NOT NULL,
-                  FOREIGN KEY(card_id) REFERENCES cards(id)
+                  FOREIGN KEY(card_id)
+                      REFERENCES cards(id)
+                      ON DELETE CASCADE
                   )''')
 
     c.execute('''CREATE TABLE reward_types
                  (id INTEGER PRIMARY KEY NOT NULL,
                   description TEXT NOT NULL UNIQUE)''')
 
-    redemption_types = [('cash back',), ('flight',), ('gift card',), ('hotel',),
-                        ('statement credit',)]
+    reward_types = [('cash back',), ('flight',), ('gift card',), ('hotel',),
+                    ('statement credit',)]
 
     c.executemany('INSERT INTO reward_types (description) VALUES (?)',
-                  redemption_types)
+                  reward_types)
 
     c.execute('''CREATE TABLE rewards
-                (id integer PRIMARY KEY NOT NULL,
-                 redemption_date TEXT NOT NULL,
-                 value INTEGER NOT NULL,
-                 description TEXT,
-                 card_id INTEGER NOT NULL,
-                 reward_type_id INTEGER NOT NULL,
-                 FOREIGN KEY(card_id) REFERENCES cards(id),
-                 FOREIGN KEY(reward_type_id) REFERENCES reward_types(id)
-                 )''')
+                 (id integer PRIMARY KEY NOT NULL,
+                  redemption_date TEXT NOT NULL,
+                  value INTEGER NOT NULL,
+                  description TEXT,
+                  card_id INTEGER NOT NULL,
+                  reward_type_id INTEGER NOT NULL,
+                  FOREIGN KEY(card_id)
+                      REFERENCES cards(id)
+                      ON DELETE CASCADE,
+                  FOREIGN KEY(reward_type_id)
+                      REFERENCES reward_types(id)
+                      ON DELETE CASCADE
+                  )''')
 
     c.execute('''CREATE TABLE programs
                  (id INTEGER PRIMARY KEY NOT NULL,
@@ -93,8 +99,8 @@ def initialize_application():
     config_path = util.get_config_path()
 
     if os.path.exists(config_path):
-        if not click.confirm(('Churn has already been initialized. '
-                              'Would you look to clear your existing data, and '
+        if not click.confirm(('Churn has already been initialized.\n'
+                              'Delete your existing data, and '
                               'reinitialize?')):
             exit(0)
 
@@ -103,20 +109,24 @@ def initialize_application():
     except FileExistsError:
         pass
 
-    use_default = click.confirm(
-        'Would you like your data to be stored in the ' +
-        'default location?')
-    db_path = os.path.join(config_dir, 'churn.db')
+    click.echo('Default directory: ' + config_dir)
+    use_default = click.confirm('Store your data in the default directory?')
+
+    db_name = 'churn.db'
+    db_path = os.path.join(config_dir, db_name)
     if not use_default:
-        given_path = click.prompt(
-            'Please enter a directory to place the data file')
-        db_path = os.path.join(given_path, 'churn.db')
+        given_dir = click.prompt('Absolute directory')
+        while not os.path.isdir(given_dir):
+            click.secho('Invalid directory.', fg='red')
+            given_dir = click.prompt('Absolute directory')
+        db_path = os.path.join(given_dir, db_name)
 
     config = configparser.ConfigParser()
     config['database'] = {
         'path': db_path,
         'version': 1
     }
+
     with open(config_path, 'w') as config_file:
         config.write(config_file)
 
@@ -125,4 +135,4 @@ def initialize_application():
     except FileNotFoundError:
         pass
 
-    initialize_tables(db_path)
+    _initialize_tables(db_path)
