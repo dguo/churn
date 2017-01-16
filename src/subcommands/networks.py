@@ -2,8 +2,9 @@ import sqlite3
 
 import click
 from pick import pick
+from tabulate import tabulate
 
-from ..util import pick_with_cancel
+from ..util import pick_with_cancel, successful_update_message
 
 def _get_networks(connection):
     command = 'SELECT id, name FROM card_networks ORDER BY name'
@@ -16,9 +17,9 @@ def select_network_id(connection):
     return networks[selection[1]]['id']
 
 def list_networks(connection):
-    click.echo_via_pager('\n'.join(
-        [network['name'] for network in _get_networks(connection)]
-    ))
+    networks = [[index + 1, network['name']]
+                for index, network in enumerate(_get_networks(connection))]
+    click.echo_via_pager(tabulate(networks, tablefmt='fancy_grid'))
 
 def add_network(connection):
     new_network = click.prompt('Please enter a new card network')
@@ -40,10 +41,13 @@ def remove_network(connection):
     selection = pick_with_cancel(title,
                                  [network['name'] for network in networks])
     if selection:
+        if not click.confirm('Remove ' + selection[0] +
+                             ' and all of its related cards, payments, etc.?'):
+            return
         command = 'DELETE FROM card_networks WHERE name = ?'
         with connection:
             connection.execute(command, (selection[0],))
-        click.echo('Removed the card network: ' + selection[0])
+        click.secho('Removed the card network: ' + selection[0], fg='green')
 
 def update_network(connection):
     title = 'Please select a card network.'
@@ -58,3 +62,4 @@ def update_network(connection):
         command = 'UPDATE card_networks SET name = ? WHERE name = ?'
         with connection:
             connection.execute(command, (new_name, selection[0]))
+        successful_update_message()
