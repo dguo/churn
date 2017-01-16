@@ -26,8 +26,7 @@ def _initialize_tables(db_path):
 
     card_issuers = [('American Express',), ('Barclays',), ('Bank of America',),
                     ('Capital One',), ('Chase',), ('Citibank',), ('Comenity',),
-                    ('Discover',), ('Mastercard',), ('U.S. Bank',),
-                    ('Wells Fargo',)]
+                    ('Discover',), ('U.S. Bank',), ('Wells Fargo',)]
 
     c.executemany('INSERT INTO card_issuers (name) VALUES (?)', card_issuers)
 
