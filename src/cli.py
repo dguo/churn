@@ -21,7 +21,7 @@ from .subcommands.uninstall import uninstall_application
 
 CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
 
-def get_connection():
+def _get_connection():
     try:
         return util.get_connection()
     except errors.MissingConfigError:
@@ -51,13 +51,13 @@ def initialize():
 def networks(command):
     """Manage card networks."""
     if command == 'list':
-        list_networks(get_connection())
+        list_networks(_get_connection())
     elif command == 'add':
-        add_network(get_connection())
+        add_network(_get_connection())
     elif command == 'remove':
-        remove_network(get_connection())
+        remove_network(_get_connection())
     elif command == 'update':
-        update_network(get_connection())
+        update_network(_get_connection())
     else:
         main(['networks', '--help'])
 
@@ -73,13 +73,13 @@ def networks(command):
 def issuers(command):
     """Manage card issuers."""
     if command == 'list':
-        list_issuers(get_connection())
+        list_issuers(_get_connection())
     elif command == 'add':
-        add_issuer(get_connection())
+        add_issuer(_get_connection())
     elif command == 'remove':
-        remove_issuer(get_connection())
+        remove_issuer(_get_connection())
     elif command == 'update':
-        update_issuer(get_connection())
+        update_issuer(_get_connection())
     else:
         main(['issuers', '--help'])
 
@@ -109,13 +109,13 @@ def config(command):
 def reward_types(command):
     """Manage reward types."""
     if command == 'list':
-        list_reward_types(get_connection())
+        list_reward_types(_get_connection())
     elif command == 'add':
-        add_reward_type(get_connection())
+        add_reward_type(_get_connection())
     elif command == 'remove':
-        remove_reward_type(get_connection())
+        remove_reward_type(_get_connection())
     elif command == 'update':
-        update_reward_type(get_connection())
+        update_reward_type(_get_connection())
     else:
         main(['reward-types', '--help'])
 
@@ -131,13 +131,13 @@ def reward_types(command):
 def cards(command):
     """Manage cards."""
     if command == 'list':
-        list_cards(get_connection())
+        list_cards(_get_connection())
     elif command == 'add':
-        add_card(get_connection())
+        add_card(_get_connection())
     elif command == 'remove':
-        remove_card(get_connection())
+        remove_card(_get_connection())
     elif command == 'update':
-        update_card(get_connection(), None)
+        update_card(_get_connection(), None)
     else:
         main(['cards', '--help'])
 
@@ -153,13 +153,13 @@ def cards(command):
 def programs(command):
     """Manage rewards programs."""
     if command == 'list':
-        list_programs(get_connection())
+        list_programs(_get_connection())
     elif command == 'add':
-        add_program(get_connection())
+        add_program(_get_connection())
     elif command == 'remove':
-        remove_program(get_connection())
+        remove_program(_get_connection())
     elif command == 'update':
-        update_program(get_connection(), None)
+        update_program(_get_connection(), None)
     else:
         main(['programs', '--help'])
 
@@ -175,13 +175,13 @@ def programs(command):
 def payments(command):
     """Manage payments."""
     if command == 'list':
-        list_payments(get_connection())
+        list_payments(_get_connection())
     elif command == 'add':
-        add_payment(get_connection())
+        add_payment(_get_connection())
     elif command == 'remove':
-        remove_payment(get_connection())
+        remove_payment(_get_connection())
     elif command == 'update':
-        update_payment(get_connection(), None)
+        update_payment(_get_connection(), None)
     else:
         main(['payments', '--help'])
 
@@ -197,20 +197,20 @@ def payments(command):
 def rewards(command):
     """Manage rewards."""
     if command == 'list':
-        list_rewards(get_connection())
+        list_rewards(_get_connection())
     elif command == 'add':
-        add_reward(get_connection())
+        add_reward(_get_connection())
     elif command == 'remove':
-        remove_reward(get_connection())
+        remove_reward(_get_connection())
     elif command == 'update':
-        update_reward(get_connection(), None)
+        update_reward(_get_connection(), None)
     else:
         main(['rewards', '--help'])
 
 @main.command()
 def stats():
     """Get rewards stats."""
-    list_stats(get_connection())
+    list_stats(_get_connection())
 
 @main.command()
 def uninstall():
