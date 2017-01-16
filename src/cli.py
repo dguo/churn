@@ -16,7 +16,7 @@ from .subcommands.payments import (list_payments, add_payment, remove_payment,
                                    update_payment)
 from .subcommands.rewards import (list_rewards, add_reward, remove_reward,
                                   update_reward)
-
+from .subcommands.stats import list_stats
 from .subcommands.uninstall import uninstall_application
 
 CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
@@ -206,6 +206,11 @@ def rewards(command):
         update_reward(get_connection(), None)
     else:
         main(['rewards', '--help'])
+
+@main.command()
+def stats():
+    """Get rewards stats."""
+    list_stats(get_connection())
 
 @main.command()
 def uninstall():
