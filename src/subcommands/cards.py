@@ -78,7 +78,6 @@ def select_card(connection, card_id):
 
     cards = connection.execute(command).fetchall()
     if not cards:
-        click.secho('There is no card to update.', fg='red')
         return None
 
     selection = pick([card['description'] for card in cards] + ['(cancel)'],
@@ -122,11 +121,13 @@ def remove_card(connection):
     command = 'DELETE FROM cards WHERE id = ?'
     with connection:
         connection.execute(command, (card['id'],))
+
     click.secho('Removed the card: ' + card['description'], fg='green')
 
 def update_card(connection, card_id):
     card = select_card(connection, card_id)
     if not card:
+        click.secho('There is no card to update.', fg='red')
         return
 
     attributes = [
