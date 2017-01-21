@@ -46,11 +46,10 @@ def select_program(connection, program_id):
 
     programs = connection.execute(command).fetchall()
     if not programs:
-        click.secho('There is no program to update.', fg='red')
         return None
 
     selection = pick([program['name'] for program in programs] + ['(cancel)'],
-                     'Select the program.')
+                     'Please select a rewards program.')
     index = selection[1]
 
     return None if index == len(programs) else programs[index]
@@ -89,6 +88,7 @@ def remove_program(connection):
 def update_program(connection, program_id):
     program = select_program(connection, program_id)
     if not program:
+        click.secho('There is no program to update.', fg='red')
         return
 
     attributes = [
