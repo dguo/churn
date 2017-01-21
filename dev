@@ -45,29 +45,29 @@ def publish(args):
 
 def main():
     parser = argparse.ArgumentParser(prog='./dev')
-    subparsers = parser.add_subparsers(help='Available commands')
+    subparsers = parser.add_subparsers(help='available actions')
 
     parser_up = subparsers.add_parser('up',
-                                      help='Bring up a development enviroment')
+                                      help='bring up a development enviroment')
     parser_up.set_defaults(func=up)
 
     parser_down = subparsers.add_parser('down',
-                                        help=('Bring down the development '
+                                        help=('bring down the development '
                                               'environment, and clean up'))
     parser_down.set_defaults(func=down)
 
-    parser_lint = subparsers.add_parser('lint', help='Lint the code')
+    parser_lint = subparsers.add_parser('lint', help='lint the code')
     parser_lint.set_defaults(func=lint)
 
-    parser_test = subparsers.add_parser('test', help='Test the code')
+    parser_test = subparsers.add_parser('test', help='test the code')
     parser_test.set_defaults(func=test)
 
     parser_package = subparsers.add_parser('package',
-                                           help='Create packages for PyPI.')
+                                           help='create packages for PyPI')
     parser_package.set_defaults(func=package)
 
     parser_publish = subparsers.add_parser('publish',
-                                           help='Publish to PyPI.')
+                                           help='publish to PyPI')
     parser_publish.set_defaults(func=publish)
 
     args = parser.parse_args()
