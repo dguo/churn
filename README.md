@@ -1,4 +1,4 @@
-# churn [![Build Status](https://travis-ci.org/dguo/churn.svg?branch=master)](https://travis-ci.org/dguo/churn)
+# churn [![PyPI](https://img.shields.io/pypi/v/churn.svg)](https://pypi.python.org/pypi/churn) [![Build Status](https://travis-ci.org/dguo/churn.svg?branch=master)](https://travis-ci.org/dguo/churn)
 CLI for keeping track of credit card activity (payments and reward redemptions)
 
 ## Installation

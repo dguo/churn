@@ -33,6 +33,16 @@ def test(args):
     rc = call(['docker-compose', 'run', 'churn', 'bash', '-c', 'pytest'])
     exit(rc)
 
+def package(args):
+    rc = call(['docker-compose', 'run', 'churn', 'bash', '-c',
+               'python setup.py sdist bdist_wheel'])
+    exit(rc)
+
+def publish(args):
+    rc = call(['docker-compose', 'run', 'churn', 'bash', '-c',
+               'twine upload dist/*'])
+    exit(rc)
+
 def main():
     parser = argparse.ArgumentParser(prog='./dev')
     subparsers = parser.add_subparsers(help='Available commands')
@@ -51,6 +61,14 @@ def main():
 
     parser_test = subparsers.add_parser('test', help='Test the code')
     parser_test.set_defaults(func=test)
+
+    parser_package = subparsers.add_parser('package',
+                                           help='Create packages for PyPI.')
+    parser_package.set_defaults(func=package)
+
+    parser_publish = subparsers.add_parser('publish',
+                                           help='Publish to PyPI.')
+    parser_publish.set_defaults(func=publish)
 
     args = parser.parse_args()
     args.func(args)

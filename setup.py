@@ -6,11 +6,12 @@ setup(
     description='CLI for credit card payments and rewards',
     url='https://github.com/dguo/churn',
     author='Danny Guo',
+    author_email='dannyguo91@gmail.com',
     license='MIT',
     classifiers=[
         'Development Status :: 3 - Alpha',
         'Intended Audience :: End Users/Desktop',
-        'Topic :: Organisational :: Financial',
+        'Topic :: Office/Business :: Financial :: Accounting',
         'License :: OSI Approved :: MIT License',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.3',
