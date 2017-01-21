@@ -2,7 +2,8 @@ import click
 from pick import pick
 from tabulate import tabulate
 
-from ..util import pick_with_cancel, prompt_for_date, prompt_for_money
+from ..util import (pick_with_cancel, prompt_for_date, prompt_for_money,
+                    format_money)
 from .cards import select_card
 from .reward_types import select_reward_type_id
 
@@ -58,7 +59,7 @@ def select_reward(connection, reward_id):
         return None
 
     options = [reward['redemption_date'] + ' | ' + reward['card'] +
-               ' | ' + '${0:.2f}'.format(reward['value']) +
+               ' | ' + format_money(reward['value']) +
                (' | ' + reward['description']
                 if reward['description'] else '')
                for reward in rewards]
@@ -113,7 +114,7 @@ def update_reward(connection, reward_id):
 
     attributes = [
         ('redemption_date', 'Redemption date: ' + reward['redemption_date']),
-        ('value', 'Value: ' + '${0:.2f}'.format(reward['value'])),
+        ('value', 'Value: ' + format_money(reward['value'])),
         ('description', 'Description: ' + (reward['description'] if
                                            reward['description'] else 'N/A')),
         ('card_id', 'Card: ' + reward['card']),

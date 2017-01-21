@@ -2,7 +2,8 @@ import click
 from pick import pick
 from tabulate import tabulate
 
-from ..util import pick_with_cancel, prompt_for_date, prompt_for_money
+from ..util import (pick_with_cancel, prompt_for_date, prompt_for_money,
+                    format_money)
 from .cards import select_card
 
 def _get_payments(connection):
@@ -53,7 +54,7 @@ def select_payment(connection, payment_id):
         return None
 
     options = [payment['payment_date'] + ' | ' + payment['issuer'] + ' ' +
-               payment['card'] + ' | ' + '${0:.2f}'.format(payment['amount'])
+               payment['card'] + ' | ' + format_money(payment['amount'])
                for payment in payments]
 
     selection = pick(options + ['(cancel)'], 'Select the payment:')
@@ -100,7 +101,7 @@ def update_payment(connection, payment_id):
     attributes = [
         ('payment_date', 'Payment date: ' + payment['payment_date']),
         ('card_id', 'Card: ' + payment['network'] + ' ' + payment['card']),
-        ('amount', 'Amount: ' + '${0:.2f}'.format(payment['amount']))
+        ('amount', 'Amount: ' + format_money(payment['amount']))
     ]
 
     current_attributes = [attribute[1] for attribute in attributes]
