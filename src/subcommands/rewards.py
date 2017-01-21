@@ -76,13 +76,14 @@ def list_rewards(connection):
                                   floatfmt=',.2f'))
 
 def add_reward(connection):
-    redemption_date = _prompt_for_redemption_date()
-    value = prompt_for_money('Value')
-    description = _prompt_for_description()
     card = select_card(connection, None)
     if not card:
         return
     card_id = card['id']
+
+    redemption_date = _prompt_for_redemption_date()
+    value = prompt_for_money('Value')
+    description = _prompt_for_description()
     reward_type_id = select_reward_type_id(connection)
 
     command = '''INSERT INTO rewards (redemption_date,

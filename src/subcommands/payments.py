@@ -69,12 +69,13 @@ def list_payments(connection):
                                   floatfmt=',.2f'))
 
 def add_payment(connection):
-    payment_date = _prompt_for_payment_date()
-    amount = prompt_for_money('Amount')
     card = select_card(connection, None)
     if not card:
         return
     card_id = card['id']
+
+    payment_date = _prompt_for_payment_date()
+    amount = prompt_for_money('Amount')
 
     command = '''INSERT INTO payments (payment_date, amount, card_id)
                  VALUES (?, ?, ?)'''
