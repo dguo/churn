@@ -29,6 +29,7 @@ def _get_connection():
         exit(1)
 
 @click.group(context_settings=CONTEXT_SETTINGS)
+@click.version_option(None, '-v', '--version', message='%(version)s')
 def main():
     """Keep track of your credit card payments and rewards."""
 
