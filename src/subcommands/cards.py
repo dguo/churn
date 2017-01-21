@@ -122,7 +122,7 @@ def remove_card(connection):
     command = 'DELETE FROM cards WHERE id = ?'
     with connection:
         connection.execute(command, (card['id'],))
-    click.echo('Removed the card: ' + card['description'])
+    click.secho('Removed the card: ' + card['description'], fg='green')
 
 def update_card(connection, card_id):
     card = select_card(connection, card_id)

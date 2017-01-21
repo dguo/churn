@@ -89,7 +89,7 @@ def remove_payment(connection):
     command = 'DELETE FROM payments WHERE id = ?'
     with connection:
         connection.execute(command, (payment['id'],))
-    click.echo('Removed the payment.')
+    click.secho('Removed the payment.', fg='green')
 
 def update_payment(connection, payment_id):
     payment = select_payment(connection, payment_id)

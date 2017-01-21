@@ -83,7 +83,7 @@ def remove_program(connection):
     command = 'DELETE FROM programs WHERE id = ?'
     with connection:
         connection.execute(command, (program['id'],))
-    click.echo('Removed the program: ' + program['name'])
+    click.secho('Removed the program: ' + program['name'], fg='green')
 
 def update_program(connection, program_id):
     program = select_program(connection, program_id)

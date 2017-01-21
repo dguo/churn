@@ -103,7 +103,7 @@ def remove_reward(connection):
     command = 'DELETE FROM rewards WHERE id = ?'
     with connection:
         connection.execute(command, (reward['id'],))
-    click.echo('Removed the reward.')
+    click.secho('Removed the reward.', fg='green')
 
 def update_reward(connection, reward_id):
     reward = select_reward(connection, reward_id)
