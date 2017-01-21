@@ -117,7 +117,7 @@ def update_reward(connection, reward_id):
         ('redemption_date', 'Redemption date: ' + reward['redemption_date']),
         ('value', 'Value: ' + format_money(reward['value'])),
         ('description', 'Description: ' + (reward['description'] if
-                                           reward['description'] else 'N/A')),
+                                           reward['description'] else '')),
         ('card_id', 'Card: ' + reward['card']),
         ('reward_type_id', 'Type: ' +  reward['reward_type'])
     ]
