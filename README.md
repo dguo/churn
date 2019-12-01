@@ -1,13 +1,20 @@
-# churn [![PyPI](https://img.shields.io/pypi/v/churn.svg)](https://pypi.python.org/pypi/churn) [![Build Status](https://travis-ci.org/dguo/churn.svg?branch=master)](https://travis-ci.org/dguo/churn)
+# churn
+
+[![PyPI](https://img.shields.io/pypi/v/churn.svg)](https://pypi.python.org/pypi/churn)
+[![CI status](https://github.com/dguo/churn/workflows/CI/badge.svg)](https://github.com/dguo/churn/actions?query=branch%3Amaster)
+
 CLI for keeping track of credit card activity (payments and reward redemptions)
 
 ## Installation
+
 `$ pip install churn`
 
 ## Usage
+
 `$ churn --help`
 
 ## Motivation
+
 While I use [Mint](https://www.mint.com/) ([Personal
 Capital](https://www.personalcapital.com/) is one alternative) to keep track of
 my personal finances, I've always used a spreadsheet to record my credit card
@@ -19,10 +26,12 @@ The data must be manually entered for now, but automating the data retrieval is
 a possible goal.
 
 ## Development
+
 If you have [Docker](https://docs.docker.com/) running, you can run `$ ./dev
 up` to bring up a development environment. From here, you should be able to run
 `$ churn`. Any changes to the source code should immediately be reflected in
 the development environment.
 
 ## License
+
 MIT
