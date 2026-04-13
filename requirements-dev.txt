@@ -1,5 +1,5 @@
 pylint==1.6.4
-pytest==3.0.5
+pytest==9.0.3
 
 # For publishing to PyPI
 twine
